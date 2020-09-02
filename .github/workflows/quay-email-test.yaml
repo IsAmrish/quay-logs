@@ -32,7 +32,18 @@ jobs:
       run: |
         echo $LOGS_DIR_SIZE;
         echo "displaying Logs Directory size"
-
+    - name: Send mail
+      uses: dawidd6/action-send-mail@v2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{secrets.MAIL_USERNAME}}
+        password: ${{secrets.MAIL_PASSWORD}}
+        subject: Quay Logs less files error
+        # Literal body:
+        body: Quay logs data of ${{github.repository}} is less than 10K, looks like something is wrong
+        to: amrishindia62@gmail.com
+        from: Growth Metrics # <user@example.com>
     # - name: Install binary of minio client
     #   run: |
     #     wget https://dl.min.io/client/mc/release/linux-amd64/mc
