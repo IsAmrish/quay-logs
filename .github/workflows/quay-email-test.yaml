@@ -33,7 +33,7 @@ jobs:
         echo $LOGS_DIR_SIZE;
         echo "displaying Logs Directory size"
     - name: Send mail
-      if: ${{ $LOGS_DIR_SIZE < 10 }}
+      if: ${{ env.LOGS_DIR_SIZE < 10 }}
       uses: dawidd6/action-send-mail@v2
       with:
         server_address: smtp.gmail.com
