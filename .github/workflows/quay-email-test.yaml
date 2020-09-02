@@ -18,12 +18,20 @@ jobs:
         echo "Starting to get openebs quay data"
         ./main --quay-auth-token=${{ secrets.QUAY_AUTH_TOKEN }} --quay-namespace=openebs
         echo "Finished getting logs"
+    - name: Calculating sizes of `logs` directory
+    # SIZE will be in Kilobytes (K); When nothing is downloaded, size is around 4K
+      run: |
         SIZE=$(eval "du -shk logs")
         echo $SIZE
         read size dirname <<< $SIZE
         echo $size
         echo $dirname
         echo "Finish Calculating size"
+        echo "::set-env name=LOGS_DIR_SIZE::$size"
+    - name: Displaying Directory size
+      run: |
+        echo $LOGS_DIR_SIZE;
+        echo "displaying Logs Directory size"
 
     # - name: Install binary of minio client
     #   run: |
