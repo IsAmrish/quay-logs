@@ -42,9 +42,16 @@ jobs:
         password: ${{secrets.MAIL_PASSWORD}}
         subject: Quay Logs less files error
         # Literal body:
-        body: Quay logs data of ${{github.repository}} is less than 10K, looks like something is wrong
+        body: Quay logs data of ${{github.repository}} is less than 10KB, looks like something is wrong
         to: amrishindia62@gmail.com
         from: Growth Metrics # <user@example.com>
+    - name: Send message to Slack API
+      if: ${{ env.LOGS_DIR_SIZE < 10 }}
+      uses: archive/github-actions-slack@v1.0.3
+      with:
+        slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+        slack-channel: ${{ secrets.SLACK_CHANNEL }}
+        slack-text: Quay logs data of ${{github.repository}} is less than 10KB, looks like something is wrong
     # - name: Install binary of minio client
     #   run: |
     #     wget https://dl.min.io/client/mc/release/linux-amd64/mc
